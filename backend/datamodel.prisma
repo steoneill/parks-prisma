@@ -1,0 +1,16 @@
+type Ride {
+  id: ID! @id
+  rideId: String! @unique
+  name: String!
+  waitTime: Int!
+  active: Boolean!
+  fastPass: Boolean!
+  status: String!
+  lastUpdate: String
+}
+
+type PastWaitTime {
+  id: ID! @id
+  waitTime: Int!
+  date: String!
+}
