@@ -17,7 +17,7 @@ async function createRide(ride) {
     name: ride.name,
     waitTime: ride.waitTime,
     active: ride.active,
-    fastPass: ride.fastPass,
+    fastPass: ride.fastPass, 
     status: ride.status,
     lastUpdate: ride.lastUpdate
   });
