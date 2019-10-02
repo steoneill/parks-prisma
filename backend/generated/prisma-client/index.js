@@ -11,6 +11,10 @@ var models = [
   {
     name: "PastWaitTime",
     embedded: false
+  },
+  {
+    name: "Park",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
