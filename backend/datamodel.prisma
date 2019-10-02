@@ -7,10 +7,36 @@ type Ride {
   fastPass: Boolean!
   status: String!
   lastUpdate: String
+  park: Park
 }
 
 type PastWaitTime {
   id: ID! @id
   waitTime: Int!
   date: String!
+}
+
+type Park { 
+  id: ID! @id
+  parkId: String! @unique
+  rides: [Ride]!
+  Name: String!
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+type User {
+  id: ID! @id
+  firstName: String
+  lastName: String
+  age: String
+  password: String!
+  email: String!
+  username: String!
+
 }

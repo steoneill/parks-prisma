@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  park: (where?: ParkWhereInput) => Promise<boolean>;
   pastWaitTime: (where?: PastWaitTimeWhereInput) => Promise<boolean>;
   ride: (where?: RideWhereInput) => Promise<boolean>;
 }
@@ -39,6 +40,25 @@ export interface Prisma {
    * Queries
    */
 
+  park: (where: ParkWhereUniqueInput) => ParkNullablePromise;
+  parks: (args?: {
+    where?: ParkWhereInput;
+    orderBy?: ParkOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Park>;
+  parksConnection: (args?: {
+    where?: ParkWhereInput;
+    orderBy?: ParkOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ParkConnectionPromise;
   pastWaitTime: (
     where: PastWaitTimeWhereUniqueInput
   ) => PastWaitTimeNullablePromise;
@@ -85,6 +105,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createPark: (data: ParkCreateInput) => ParkPromise;
+  updatePark: (args: {
+    data: ParkUpdateInput;
+    where: ParkWhereUniqueInput;
+  }) => ParkPromise;
+  updateManyParks: (args: {
+    data: ParkUpdateManyMutationInput;
+    where?: ParkWhereInput;
+  }) => BatchPayloadPromise;
+  upsertPark: (args: {
+    where: ParkWhereUniqueInput;
+    create: ParkCreateInput;
+    update: ParkUpdateInput;
+  }) => ParkPromise;
+  deletePark: (where: ParkWhereUniqueInput) => ParkPromise;
+  deleteManyParks: (where?: ParkWhereInput) => BatchPayloadPromise;
   createPastWaitTime: (data: PastWaitTimeCreateInput) => PastWaitTimePromise;
   updatePastWaitTime: (args: {
     data: PastWaitTimeUpdateInput;
@@ -130,6 +166,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  park: (
+    where?: ParkSubscriptionWhereInput
+  ) => ParkSubscriptionPayloadSubscription;
   pastWaitTime: (
     where?: PastWaitTimeSubscriptionWhereInput
   ) => PastWaitTimeSubscriptionPayloadSubscription;
@@ -145,14 +184,6 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
-
-export type PastWaitTimeOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "waitTime_ASC"
-  | "waitTime_DESC"
-  | "date_ASC"
-  | "date_DESC";
 
 export type RideOrderByInput =
   | "id_ASC"
@@ -172,26 +203,149 @@ export type RideOrderByInput =
   | "lastUpdate_ASC"
   | "lastUpdate_DESC";
 
+export type ParkOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "parkId_ASC"
+  | "parkId_DESC"
+  | "Name_ASC"
+  | "Name_DESC"
+  | "LocationString_ASC"
+  | "LocationString_DESC"
+  | "SupportsWaitTimes_ASC"
+  | "SupportsWaitTimes_DESC"
+  | "SupportsOpeningTimes_ASC"
+  | "SupportsOpeningTimes_DESC"
+  | "SupportsRideSchedules_ASC"
+  | "SupportsRideSchedules_DESC"
+  | "FastPass_ASC"
+  | "FastPass_DESC"
+  | "FastPassReturnTimes_ASC"
+  | "FastPassReturnTimes_DESC"
+  | "Now_ASC"
+  | "Now_DESC";
+
+export type PastWaitTimeOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "waitTime_ASC"
+  | "waitTime_DESC"
+  | "date_ASC"
+  | "date_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface RideCreateInput {
-  id?: Maybe<ID_Input>;
-  rideId: String;
-  name: String;
-  waitTime: Int;
-  active: Boolean;
-  fastPass: Boolean;
-  status: String;
+export interface RideUpdateManyWithoutParkInput {
+  create?: Maybe<RideCreateWithoutParkInput[] | RideCreateWithoutParkInput>;
+  delete?: Maybe<RideWhereUniqueInput[] | RideWhereUniqueInput>;
+  connect?: Maybe<RideWhereUniqueInput[] | RideWhereUniqueInput>;
+  set?: Maybe<RideWhereUniqueInput[] | RideWhereUniqueInput>;
+  disconnect?: Maybe<RideWhereUniqueInput[] | RideWhereUniqueInput>;
+  update?: Maybe<
+    | RideUpdateWithWhereUniqueWithoutParkInput[]
+    | RideUpdateWithWhereUniqueWithoutParkInput
+  >;
+  upsert?: Maybe<
+    | RideUpsertWithWhereUniqueWithoutParkInput[]
+    | RideUpsertWithWhereUniqueWithoutParkInput
+  >;
+  deleteMany?: Maybe<RideScalarWhereInput[] | RideScalarWhereInput>;
+  updateMany?: Maybe<
+    RideUpdateManyWithWhereNestedInput[] | RideUpdateManyWithWhereNestedInput
+  >;
+}
+
+export type ParkWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  parkId?: Maybe<String>;
+}>;
+
+export type RideWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  rideId?: Maybe<String>;
+}>;
+
+export interface RideUpdateManyDataInput {
+  rideId?: Maybe<String>;
+  name?: Maybe<String>;
+  waitTime?: Maybe<Int>;
+  active?: Maybe<Boolean>;
+  fastPass?: Maybe<Boolean>;
+  status?: Maybe<String>;
   lastUpdate?: Maybe<String>;
+}
+
+export interface PastWaitTimeUpdateManyMutationInput {
+  waitTime?: Maybe<Int>;
+  date?: Maybe<String>;
+}
+
+export interface RideUpsertWithWhereUniqueWithoutParkInput {
+  where: RideWhereUniqueInput;
+  update: RideUpdateWithoutParkDataInput;
+  create: RideCreateWithoutParkInput;
+}
+
+export interface PastWaitTimeUpdateInput {
+  waitTime?: Maybe<Int>;
+  date?: Maybe<String>;
+}
+
+export interface PastWaitTimeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PastWaitTimeWhereInput>;
+  AND?: Maybe<
+    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
+  >;
+}
+
+export interface PastWaitTimeCreateInput {
+  id?: Maybe<ID_Input>;
+  waitTime: Int;
+  date: String;
+}
+
+export interface ParkSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ParkWhereInput>;
+  AND?: Maybe<ParkSubscriptionWhereInput[] | ParkSubscriptionWhereInput>;
+  OR?: Maybe<ParkSubscriptionWhereInput[] | ParkSubscriptionWhereInput>;
+  NOT?: Maybe<ParkSubscriptionWhereInput[] | ParkSubscriptionWhereInput>;
+}
+
+export interface ParkUpsertWithoutRidesInput {
+  update: ParkUpdateWithoutRidesDataInput;
+  create: ParkCreateWithoutRidesInput;
 }
 
 export type PastWaitTimeWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface PastWaitTimeUpdateInput {
-  waitTime?: Maybe<Int>;
-  date?: Maybe<String>;
+export interface ParkCreateInput {
+  id?: Maybe<ID_Input>;
+  parkId: String;
+  rides?: Maybe<RideCreateManyWithoutParkInput>;
+  Name: String;
+  LocationString?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  Now?: Maybe<String>;
 }
 
 export interface PastWaitTimeWhereInput {
@@ -236,21 +390,58 @@ export interface PastWaitTimeWhereInput {
   NOT?: Maybe<PastWaitTimeWhereInput[] | PastWaitTimeWhereInput>;
 }
 
-export interface PastWaitTimeSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PastWaitTimeWhereInput>;
-  AND?: Maybe<
-    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    PastWaitTimeSubscriptionWhereInput[] | PastWaitTimeSubscriptionWhereInput
-  >;
+export interface RideCreateManyWithoutParkInput {
+  create?: Maybe<RideCreateWithoutParkInput[] | RideCreateWithoutParkInput>;
+  connect?: Maybe<RideWhereUniqueInput[] | RideWhereUniqueInput>;
+}
+
+export interface ParkCreateWithoutRidesInput {
+  id?: Maybe<ID_Input>;
+  parkId: String;
+  Name: String;
+  LocationString?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  Now?: Maybe<String>;
+}
+
+export interface RideCreateWithoutParkInput {
+  id?: Maybe<ID_Input>;
+  rideId: String;
+  name: String;
+  waitTime: Int;
+  active: Boolean;
+  fastPass: Boolean;
+  status: String;
+  lastUpdate?: Maybe<String>;
+}
+
+export interface RideCreateInput {
+  id?: Maybe<ID_Input>;
+  rideId: String;
+  name: String;
+  waitTime: Int;
+  active: Boolean;
+  fastPass: Boolean;
+  status: String;
+  lastUpdate?: Maybe<String>;
+  park?: Maybe<ParkCreateOneWithoutRidesInput>;
+}
+
+export interface ParkUpdateInput {
+  parkId?: Maybe<String>;
+  rides?: Maybe<RideUpdateManyWithoutParkInput>;
+  Name?: Maybe<String>;
+  LocationString?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  Now?: Maybe<String>;
 }
 
 export interface RideWhereInput {
@@ -336,23 +527,235 @@ export interface RideWhereInput {
   lastUpdate_not_starts_with?: Maybe<String>;
   lastUpdate_ends_with?: Maybe<String>;
   lastUpdate_not_ends_with?: Maybe<String>;
+  park?: Maybe<ParkWhereInput>;
   AND?: Maybe<RideWhereInput[] | RideWhereInput>;
   OR?: Maybe<RideWhereInput[] | RideWhereInput>;
   NOT?: Maybe<RideWhereInput[] | RideWhereInput>;
 }
 
-export interface PastWaitTimeCreateInput {
-  id?: Maybe<ID_Input>;
-  waitTime: Int;
-  date: String;
+export interface ParkUpdateManyMutationInput {
+  parkId?: Maybe<String>;
+  Name?: Maybe<String>;
+  LocationString?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  Now?: Maybe<String>;
 }
 
-export type RideWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  rideId?: Maybe<String>;
-}>;
+export interface ParkUpdateWithoutRidesDataInput {
+  parkId?: Maybe<String>;
+  Name?: Maybe<String>;
+  LocationString?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  Now?: Maybe<String>;
+}
 
-export interface RideUpdateManyMutationInput {
+export interface RideUpdateWithWhereUniqueWithoutParkInput {
+  where: RideWhereUniqueInput;
+  data: RideUpdateWithoutParkDataInput;
+}
+
+export interface RideUpdateInput {
+  rideId?: Maybe<String>;
+  name?: Maybe<String>;
+  waitTime?: Maybe<Int>;
+  active?: Maybe<Boolean>;
+  fastPass?: Maybe<Boolean>;
+  status?: Maybe<String>;
+  lastUpdate?: Maybe<String>;
+  park?: Maybe<ParkUpdateOneWithoutRidesInput>;
+}
+
+export interface RideUpdateManyWithWhereNestedInput {
+  where: RideScalarWhereInput;
+  data: RideUpdateManyDataInput;
+}
+
+export interface RideScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  rideId?: Maybe<String>;
+  rideId_not?: Maybe<String>;
+  rideId_in?: Maybe<String[] | String>;
+  rideId_not_in?: Maybe<String[] | String>;
+  rideId_lt?: Maybe<String>;
+  rideId_lte?: Maybe<String>;
+  rideId_gt?: Maybe<String>;
+  rideId_gte?: Maybe<String>;
+  rideId_contains?: Maybe<String>;
+  rideId_not_contains?: Maybe<String>;
+  rideId_starts_with?: Maybe<String>;
+  rideId_not_starts_with?: Maybe<String>;
+  rideId_ends_with?: Maybe<String>;
+  rideId_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  waitTime?: Maybe<Int>;
+  waitTime_not?: Maybe<Int>;
+  waitTime_in?: Maybe<Int[] | Int>;
+  waitTime_not_in?: Maybe<Int[] | Int>;
+  waitTime_lt?: Maybe<Int>;
+  waitTime_lte?: Maybe<Int>;
+  waitTime_gt?: Maybe<Int>;
+  waitTime_gte?: Maybe<Int>;
+  active?: Maybe<Boolean>;
+  active_not?: Maybe<Boolean>;
+  fastPass?: Maybe<Boolean>;
+  fastPass_not?: Maybe<Boolean>;
+  status?: Maybe<String>;
+  status_not?: Maybe<String>;
+  status_in?: Maybe<String[] | String>;
+  status_not_in?: Maybe<String[] | String>;
+  status_lt?: Maybe<String>;
+  status_lte?: Maybe<String>;
+  status_gt?: Maybe<String>;
+  status_gte?: Maybe<String>;
+  status_contains?: Maybe<String>;
+  status_not_contains?: Maybe<String>;
+  status_starts_with?: Maybe<String>;
+  status_not_starts_with?: Maybe<String>;
+  status_ends_with?: Maybe<String>;
+  status_not_ends_with?: Maybe<String>;
+  lastUpdate?: Maybe<String>;
+  lastUpdate_not?: Maybe<String>;
+  lastUpdate_in?: Maybe<String[] | String>;
+  lastUpdate_not_in?: Maybe<String[] | String>;
+  lastUpdate_lt?: Maybe<String>;
+  lastUpdate_lte?: Maybe<String>;
+  lastUpdate_gt?: Maybe<String>;
+  lastUpdate_gte?: Maybe<String>;
+  lastUpdate_contains?: Maybe<String>;
+  lastUpdate_not_contains?: Maybe<String>;
+  lastUpdate_starts_with?: Maybe<String>;
+  lastUpdate_not_starts_with?: Maybe<String>;
+  lastUpdate_ends_with?: Maybe<String>;
+  lastUpdate_not_ends_with?: Maybe<String>;
+  AND?: Maybe<RideScalarWhereInput[] | RideScalarWhereInput>;
+  OR?: Maybe<RideScalarWhereInput[] | RideScalarWhereInput>;
+  NOT?: Maybe<RideScalarWhereInput[] | RideScalarWhereInput>;
+}
+
+export interface ParkWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  parkId?: Maybe<String>;
+  parkId_not?: Maybe<String>;
+  parkId_in?: Maybe<String[] | String>;
+  parkId_not_in?: Maybe<String[] | String>;
+  parkId_lt?: Maybe<String>;
+  parkId_lte?: Maybe<String>;
+  parkId_gt?: Maybe<String>;
+  parkId_gte?: Maybe<String>;
+  parkId_contains?: Maybe<String>;
+  parkId_not_contains?: Maybe<String>;
+  parkId_starts_with?: Maybe<String>;
+  parkId_not_starts_with?: Maybe<String>;
+  parkId_ends_with?: Maybe<String>;
+  parkId_not_ends_with?: Maybe<String>;
+  rides_every?: Maybe<RideWhereInput>;
+  rides_some?: Maybe<RideWhereInput>;
+  rides_none?: Maybe<RideWhereInput>;
+  Name?: Maybe<String>;
+  Name_not?: Maybe<String>;
+  Name_in?: Maybe<String[] | String>;
+  Name_not_in?: Maybe<String[] | String>;
+  Name_lt?: Maybe<String>;
+  Name_lte?: Maybe<String>;
+  Name_gt?: Maybe<String>;
+  Name_gte?: Maybe<String>;
+  Name_contains?: Maybe<String>;
+  Name_not_contains?: Maybe<String>;
+  Name_starts_with?: Maybe<String>;
+  Name_not_starts_with?: Maybe<String>;
+  Name_ends_with?: Maybe<String>;
+  Name_not_ends_with?: Maybe<String>;
+  LocationString?: Maybe<String>;
+  LocationString_not?: Maybe<String>;
+  LocationString_in?: Maybe<String[] | String>;
+  LocationString_not_in?: Maybe<String[] | String>;
+  LocationString_lt?: Maybe<String>;
+  LocationString_lte?: Maybe<String>;
+  LocationString_gt?: Maybe<String>;
+  LocationString_gte?: Maybe<String>;
+  LocationString_contains?: Maybe<String>;
+  LocationString_not_contains?: Maybe<String>;
+  LocationString_starts_with?: Maybe<String>;
+  LocationString_not_starts_with?: Maybe<String>;
+  LocationString_ends_with?: Maybe<String>;
+  LocationString_not_ends_with?: Maybe<String>;
+  SupportsWaitTimes?: Maybe<Boolean>;
+  SupportsWaitTimes_not?: Maybe<Boolean>;
+  SupportsOpeningTimes?: Maybe<Boolean>;
+  SupportsOpeningTimes_not?: Maybe<Boolean>;
+  SupportsRideSchedules?: Maybe<Boolean>;
+  SupportsRideSchedules_not?: Maybe<Boolean>;
+  FastPass?: Maybe<Boolean>;
+  FastPass_not?: Maybe<Boolean>;
+  FastPassReturnTimes?: Maybe<Boolean>;
+  FastPassReturnTimes_not?: Maybe<Boolean>;
+  Now?: Maybe<String>;
+  Now_not?: Maybe<String>;
+  Now_in?: Maybe<String[] | String>;
+  Now_not_in?: Maybe<String[] | String>;
+  Now_lt?: Maybe<String>;
+  Now_lte?: Maybe<String>;
+  Now_gt?: Maybe<String>;
+  Now_gte?: Maybe<String>;
+  Now_contains?: Maybe<String>;
+  Now_not_contains?: Maybe<String>;
+  Now_starts_with?: Maybe<String>;
+  Now_not_starts_with?: Maybe<String>;
+  Now_ends_with?: Maybe<String>;
+  Now_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ParkWhereInput[] | ParkWhereInput>;
+  OR?: Maybe<ParkWhereInput[] | ParkWhereInput>;
+  NOT?: Maybe<ParkWhereInput[] | ParkWhereInput>;
+}
+
+export interface RideUpdateWithoutParkDataInput {
   rideId?: Maybe<String>;
   name?: Maybe<String>;
   waitTime?: Maybe<Int>;
@@ -362,9 +765,28 @@ export interface RideUpdateManyMutationInput {
   lastUpdate?: Maybe<String>;
 }
 
-export interface PastWaitTimeUpdateManyMutationInput {
+export interface ParkCreateOneWithoutRidesInput {
+  create?: Maybe<ParkCreateWithoutRidesInput>;
+  connect?: Maybe<ParkWhereUniqueInput>;
+}
+
+export interface ParkUpdateOneWithoutRidesInput {
+  create?: Maybe<ParkCreateWithoutRidesInput>;
+  update?: Maybe<ParkUpdateWithoutRidesDataInput>;
+  upsert?: Maybe<ParkUpsertWithoutRidesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ParkWhereUniqueInput>;
+}
+
+export interface RideUpdateManyMutationInput {
+  rideId?: Maybe<String>;
+  name?: Maybe<String>;
   waitTime?: Maybe<Int>;
-  date?: Maybe<String>;
+  active?: Maybe<Boolean>;
+  fastPass?: Maybe<Boolean>;
+  status?: Maybe<String>;
+  lastUpdate?: Maybe<String>;
 }
 
 export interface RideSubscriptionWhereInput {
@@ -378,58 +800,8 @@ export interface RideSubscriptionWhereInput {
   NOT?: Maybe<RideSubscriptionWhereInput[] | RideSubscriptionWhereInput>;
 }
 
-export interface RideUpdateInput {
-  rideId?: Maybe<String>;
-  name?: Maybe<String>;
-  waitTime?: Maybe<Int>;
-  active?: Maybe<Boolean>;
-  fastPass?: Maybe<Boolean>;
-  status?: Maybe<String>;
-  lastUpdate?: Maybe<String>;
-}
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface RideEdge {
-  node: Ride;
-  cursor: String;
-}
-
-export interface RideEdgePromise extends Promise<RideEdge>, Fragmentable {
-  node: <T = RidePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RideEdgeSubscription
-  extends Promise<AsyncIterator<RideEdge>>,
-    Fragmentable {
-  node: <T = RideSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface RidePreviousValues {
@@ -469,178 +841,6 @@ export interface RidePreviousValuesSubscription
   lastUpdate: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PastWaitTimeConnection {
-  pageInfo: PageInfo;
-  edges: PastWaitTimeEdge[];
-}
-
-export interface PastWaitTimeConnectionPromise
-  extends Promise<PastWaitTimeConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PastWaitTimeEdge>>() => T;
-  aggregate: <T = AggregatePastWaitTimePromise>() => T;
-}
-
-export interface PastWaitTimeConnectionSubscription
-  extends Promise<AsyncIterator<PastWaitTimeConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PastWaitTimeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePastWaitTimeSubscription>() => T;
-}
-
-export interface RideConnection {
-  pageInfo: PageInfo;
-  edges: RideEdge[];
-}
-
-export interface RideConnectionPromise
-  extends Promise<RideConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RideEdge>>() => T;
-  aggregate: <T = AggregateRidePromise>() => T;
-}
-
-export interface RideConnectionSubscription
-  extends Promise<AsyncIterator<RideConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RideEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRideSubscription>() => T;
-}
-
-export interface PastWaitTimeSubscriptionPayload {
-  mutation: MutationType;
-  node: PastWaitTime;
-  updatedFields: String[];
-  previousValues: PastWaitTimePreviousValues;
-}
-
-export interface PastWaitTimeSubscriptionPayloadPromise
-  extends Promise<PastWaitTimeSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PastWaitTimePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PastWaitTimePreviousValuesPromise>() => T;
-}
-
-export interface PastWaitTimeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PastWaitTimeSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PastWaitTimeSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PastWaitTimePreviousValuesSubscription>() => T;
-}
-
-export interface PastWaitTimePreviousValues {
-  id: ID_Output;
-  waitTime: Int;
-  date: String;
-}
-
-export interface PastWaitTimePreviousValuesPromise
-  extends Promise<PastWaitTimePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  waitTime: () => Promise<Int>;
-  date: () => Promise<String>;
-}
-
-export interface PastWaitTimePreviousValuesSubscription
-  extends Promise<AsyncIterator<PastWaitTimePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  waitTime: () => Promise<AsyncIterator<Int>>;
-  date: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PastWaitTimeEdge {
-  node: PastWaitTime;
-  cursor: String;
-}
-
-export interface PastWaitTimeEdgePromise
-  extends Promise<PastWaitTimeEdge>,
-    Fragmentable {
-  node: <T = PastWaitTimePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PastWaitTimeEdgeSubscription
-  extends Promise<AsyncIterator<PastWaitTimeEdge>>,
-    Fragmentable {
-  node: <T = PastWaitTimeSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Ride {
-  id: ID_Output;
-  rideId: String;
-  name: String;
-  waitTime: Int;
-  active: Boolean;
-  fastPass: Boolean;
-  status: String;
-  lastUpdate?: String;
-}
-
-export interface RidePromise extends Promise<Ride>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  rideId: () => Promise<String>;
-  name: () => Promise<String>;
-  waitTime: () => Promise<Int>;
-  active: () => Promise<Boolean>;
-  fastPass: () => Promise<Boolean>;
-  status: () => Promise<String>;
-  lastUpdate: () => Promise<String>;
-}
-
-export interface RideSubscription
-  extends Promise<AsyncIterator<Ride>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  rideId: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  waitTime: () => Promise<AsyncIterator<Int>>;
-  active: () => Promise<AsyncIterator<Boolean>>;
-  fastPass: () => Promise<AsyncIterator<Boolean>>;
-  status: () => Promise<AsyncIterator<String>>;
-  lastUpdate: () => Promise<AsyncIterator<String>>;
-}
-
-export interface RideNullablePromise
-  extends Promise<Ride | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  rideId: () => Promise<String>;
-  name: () => Promise<String>;
-  waitTime: () => Promise<Int>;
-  active: () => Promise<Boolean>;
-  fastPass: () => Promise<Boolean>;
-  status: () => Promise<String>;
-  lastUpdate: () => Promise<String>;
-}
-
-export interface AggregateRide {
-  count: Int;
-}
-
-export interface AggregateRidePromise
-  extends Promise<AggregateRide>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateRideSubscription
-  extends Promise<AsyncIterator<AggregateRide>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface PastWaitTime {
   id: ID_Output;
   waitTime: Int;
@@ -671,6 +871,404 @@ export interface PastWaitTimeNullablePromise
   date: () => Promise<String>;
 }
 
+export interface PastWaitTimeSubscriptionPayload {
+  mutation: MutationType;
+  node: PastWaitTime;
+  updatedFields: String[];
+  previousValues: PastWaitTimePreviousValues;
+}
+
+export interface PastWaitTimeSubscriptionPayloadPromise
+  extends Promise<PastWaitTimeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PastWaitTimePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PastWaitTimePreviousValuesPromise>() => T;
+}
+
+export interface PastWaitTimeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PastWaitTimeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PastWaitTimeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PastWaitTimePreviousValuesSubscription>() => T;
+}
+
+export interface AggregatePark {
+  count: Int;
+}
+
+export interface AggregateParkPromise
+  extends Promise<AggregatePark>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateParkSubscription
+  extends Promise<AsyncIterator<AggregatePark>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ParkEdge {
+  node: Park;
+  cursor: String;
+}
+
+export interface ParkEdgePromise extends Promise<ParkEdge>, Fragmentable {
+  node: <T = ParkPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ParkEdgeSubscription
+  extends Promise<AsyncIterator<ParkEdge>>,
+    Fragmentable {
+  node: <T = ParkSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateRide {
+  count: Int;
+}
+
+export interface AggregateRidePromise
+  extends Promise<AggregateRide>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRideSubscription
+  extends Promise<AsyncIterator<AggregateRide>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RideConnection {
+  pageInfo: PageInfo;
+  edges: RideEdge[];
+}
+
+export interface RideConnectionPromise
+  extends Promise<RideConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RideEdge>>() => T;
+  aggregate: <T = AggregateRidePromise>() => T;
+}
+
+export interface RideConnectionSubscription
+  extends Promise<AsyncIterator<RideConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RideEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRideSubscription>() => T;
+}
+
+export interface ParkConnection {
+  pageInfo: PageInfo;
+  edges: ParkEdge[];
+}
+
+export interface ParkConnectionPromise
+  extends Promise<ParkConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ParkEdge>>() => T;
+  aggregate: <T = AggregateParkPromise>() => T;
+}
+
+export interface ParkConnectionSubscription
+  extends Promise<AsyncIterator<ParkConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ParkEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateParkSubscription>() => T;
+}
+
+export interface PastWaitTimeEdge {
+  node: PastWaitTime;
+  cursor: String;
+}
+
+export interface PastWaitTimeEdgePromise
+  extends Promise<PastWaitTimeEdge>,
+    Fragmentable {
+  node: <T = PastWaitTimePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PastWaitTimeEdgeSubscription
+  extends Promise<AsyncIterator<PastWaitTimeEdge>>,
+    Fragmentable {
+  node: <T = PastWaitTimeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Park {
+  id: ID_Output;
+  parkId: String;
+  Name: String;
+  LocationString?: String;
+  SupportsWaitTimes?: Boolean;
+  SupportsOpeningTimes?: Boolean;
+  SupportsRideSchedules?: Boolean;
+  FastPass?: Boolean;
+  FastPassReturnTimes?: Boolean;
+  Now?: String;
+}
+
+export interface ParkPromise extends Promise<Park>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  parkId: () => Promise<String>;
+  rides: <T = FragmentableArray<Ride>>(args?: {
+    where?: RideWhereInput;
+    orderBy?: RideOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  Name: () => Promise<String>;
+  LocationString: () => Promise<String>;
+  SupportsWaitTimes: () => Promise<Boolean>;
+  SupportsOpeningTimes: () => Promise<Boolean>;
+  SupportsRideSchedules: () => Promise<Boolean>;
+  FastPass: () => Promise<Boolean>;
+  FastPassReturnTimes: () => Promise<Boolean>;
+  Now: () => Promise<String>;
+}
+
+export interface ParkSubscription
+  extends Promise<AsyncIterator<Park>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  parkId: () => Promise<AsyncIterator<String>>;
+  rides: <T = Promise<AsyncIterator<RideSubscription>>>(args?: {
+    where?: RideWhereInput;
+    orderBy?: RideOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  Name: () => Promise<AsyncIterator<String>>;
+  LocationString: () => Promise<AsyncIterator<String>>;
+  SupportsWaitTimes: () => Promise<AsyncIterator<Boolean>>;
+  SupportsOpeningTimes: () => Promise<AsyncIterator<Boolean>>;
+  SupportsRideSchedules: () => Promise<AsyncIterator<Boolean>>;
+  FastPass: () => Promise<AsyncIterator<Boolean>>;
+  FastPassReturnTimes: () => Promise<AsyncIterator<Boolean>>;
+  Now: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ParkNullablePromise
+  extends Promise<Park | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  parkId: () => Promise<String>;
+  rides: <T = FragmentableArray<Ride>>(args?: {
+    where?: RideWhereInput;
+    orderBy?: RideOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  Name: () => Promise<String>;
+  LocationString: () => Promise<String>;
+  SupportsWaitTimes: () => Promise<Boolean>;
+  SupportsOpeningTimes: () => Promise<Boolean>;
+  SupportsRideSchedules: () => Promise<Boolean>;
+  FastPass: () => Promise<Boolean>;
+  FastPassReturnTimes: () => Promise<Boolean>;
+  Now: () => Promise<String>;
+}
+
+export interface Ride {
+  id: ID_Output;
+  rideId: String;
+  name: String;
+  waitTime: Int;
+  active: Boolean;
+  fastPass: Boolean;
+  status: String;
+  lastUpdate?: String;
+}
+
+export interface RidePromise extends Promise<Ride>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  rideId: () => Promise<String>;
+  name: () => Promise<String>;
+  waitTime: () => Promise<Int>;
+  active: () => Promise<Boolean>;
+  fastPass: () => Promise<Boolean>;
+  status: () => Promise<String>;
+  lastUpdate: () => Promise<String>;
+  park: <T = ParkPromise>() => T;
+}
+
+export interface RideSubscription
+  extends Promise<AsyncIterator<Ride>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  rideId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  waitTime: () => Promise<AsyncIterator<Int>>;
+  active: () => Promise<AsyncIterator<Boolean>>;
+  fastPass: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<String>>;
+  lastUpdate: () => Promise<AsyncIterator<String>>;
+  park: <T = ParkSubscription>() => T;
+}
+
+export interface RideNullablePromise
+  extends Promise<Ride | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  rideId: () => Promise<String>;
+  name: () => Promise<String>;
+  waitTime: () => Promise<Int>;
+  active: () => Promise<Boolean>;
+  fastPass: () => Promise<Boolean>;
+  status: () => Promise<String>;
+  lastUpdate: () => Promise<String>;
+  park: <T = ParkPromise>() => T;
+}
+
+export interface ParkPreviousValues {
+  id: ID_Output;
+  parkId: String;
+  Name: String;
+  LocationString?: String;
+  SupportsWaitTimes?: Boolean;
+  SupportsOpeningTimes?: Boolean;
+  SupportsRideSchedules?: Boolean;
+  FastPass?: Boolean;
+  FastPassReturnTimes?: Boolean;
+  Now?: String;
+}
+
+export interface ParkPreviousValuesPromise
+  extends Promise<ParkPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  parkId: () => Promise<String>;
+  Name: () => Promise<String>;
+  LocationString: () => Promise<String>;
+  SupportsWaitTimes: () => Promise<Boolean>;
+  SupportsOpeningTimes: () => Promise<Boolean>;
+  SupportsRideSchedules: () => Promise<Boolean>;
+  FastPass: () => Promise<Boolean>;
+  FastPassReturnTimes: () => Promise<Boolean>;
+  Now: () => Promise<String>;
+}
+
+export interface ParkPreviousValuesSubscription
+  extends Promise<AsyncIterator<ParkPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  parkId: () => Promise<AsyncIterator<String>>;
+  Name: () => Promise<AsyncIterator<String>>;
+  LocationString: () => Promise<AsyncIterator<String>>;
+  SupportsWaitTimes: () => Promise<AsyncIterator<Boolean>>;
+  SupportsOpeningTimes: () => Promise<AsyncIterator<Boolean>>;
+  SupportsRideSchedules: () => Promise<AsyncIterator<Boolean>>;
+  FastPass: () => Promise<AsyncIterator<Boolean>>;
+  FastPassReturnTimes: () => Promise<AsyncIterator<Boolean>>;
+  Now: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ParkSubscriptionPayload {
+  mutation: MutationType;
+  node: Park;
+  updatedFields: String[];
+  previousValues: ParkPreviousValues;
+}
+
+export interface ParkSubscriptionPayloadPromise
+  extends Promise<ParkSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ParkPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ParkPreviousValuesPromise>() => T;
+}
+
+export interface ParkSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ParkSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ParkSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ParkPreviousValuesSubscription>() => T;
+}
+
+export interface PastWaitTimePreviousValues {
+  id: ID_Output;
+  waitTime: Int;
+  date: String;
+}
+
+export interface PastWaitTimePreviousValuesPromise
+  extends Promise<PastWaitTimePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  waitTime: () => Promise<Int>;
+  date: () => Promise<String>;
+}
+
+export interface PastWaitTimePreviousValuesSubscription
+  extends Promise<AsyncIterator<PastWaitTimePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  waitTime: () => Promise<AsyncIterator<Int>>;
+  date: () => Promise<AsyncIterator<String>>;
+}
+
 export interface RideSubscriptionPayload {
   mutation: MutationType;
   node: Ride;
@@ -696,20 +1294,25 @@ export interface RideSubscriptionPayloadSubscription
   previousValues: <T = RidePreviousValuesSubscription>() => T;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface PastWaitTimeConnection {
+  pageInfo: PageInfo;
+  edges: PastWaitTimeEdge[];
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface PastWaitTimeConnectionPromise
+  extends Promise<PastWaitTimeConnection>,
     Fragmentable {
-  count: () => Promise<Long>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PastWaitTimeEdge>>() => T;
+  aggregate: <T = AggregatePastWaitTimePromise>() => T;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface PastWaitTimeConnectionSubscription
+  extends Promise<AsyncIterator<PastWaitTimeConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PastWaitTimeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePastWaitTimeSubscription>() => T;
 }
 
 export interface AggregatePastWaitTime {
@@ -728,10 +1331,27 @@ export interface AggregatePastWaitTimeSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface RideEdge {
+  node: Ride;
+  cursor: String;
+}
+
+export interface RideEdgePromise extends Promise<RideEdge>, Fragmentable {
+  node: <T = RidePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface RideEdgeSubscription
+  extends Promise<AsyncIterator<RideEdge>>,
+    Fragmentable {
+  node: <T = RideSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type String = string;
+export type Boolean = boolean;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -742,14 +1362,14 @@ export type ID_Output = string;
 export type Long = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /**
  * Model Metadata
@@ -762,6 +1382,10 @@ export const models: Model[] = [
   },
   {
     name: "PastWaitTime",
+    embedded: false
+  },
+  {
+    name: "Park",
     embedded: false
   }
 ];

@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregatePastWaitTime {
+/* GraphQL */ `type AggregatePark {
+  count: Int!
+}
+
+type AggregatePastWaitTime {
   count: Int!
 }
 
@@ -18,6 +22,12 @@ type BatchPayload {
 scalar Long
 
 type Mutation {
+  createPark(data: ParkCreateInput!): Park!
+  updatePark(data: ParkUpdateInput!, where: ParkWhereUniqueInput!): Park
+  updateManyParks(data: ParkUpdateManyMutationInput!, where: ParkWhereInput): BatchPayload!
+  upsertPark(where: ParkWhereUniqueInput!, create: ParkCreateInput!, update: ParkUpdateInput!): Park!
+  deletePark(where: ParkWhereUniqueInput!): Park
+  deleteManyParks(where: ParkWhereInput): BatchPayload!
   createPastWaitTime(data: PastWaitTimeCreateInput!): PastWaitTime!
   updatePastWaitTime(data: PastWaitTimeUpdateInput!, where: PastWaitTimeWhereUniqueInput!): PastWaitTime
   updateManyPastWaitTimes(data: PastWaitTimeUpdateManyMutationInput!, where: PastWaitTimeWhereInput): BatchPayload!
@@ -47,6 +57,262 @@ type PageInfo {
   hasPreviousPage: Boolean!
   startCursor: String
   endCursor: String
+}
+
+type Park {
+  id: ID!
+  parkId: String!
+  rides(where: RideWhereInput, orderBy: RideOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ride!]
+  Name: String!
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+type ParkConnection {
+  pageInfo: PageInfo!
+  edges: [ParkEdge]!
+  aggregate: AggregatePark!
+}
+
+input ParkCreateInput {
+  id: ID
+  parkId: String!
+  rides: RideCreateManyWithoutParkInput
+  Name: String!
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+input ParkCreateOneWithoutRidesInput {
+  create: ParkCreateWithoutRidesInput
+  connect: ParkWhereUniqueInput
+}
+
+input ParkCreateWithoutRidesInput {
+  id: ID
+  parkId: String!
+  Name: String!
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+type ParkEdge {
+  node: Park!
+  cursor: String!
+}
+
+enum ParkOrderByInput {
+  id_ASC
+  id_DESC
+  parkId_ASC
+  parkId_DESC
+  Name_ASC
+  Name_DESC
+  LocationString_ASC
+  LocationString_DESC
+  SupportsWaitTimes_ASC
+  SupportsWaitTimes_DESC
+  SupportsOpeningTimes_ASC
+  SupportsOpeningTimes_DESC
+  SupportsRideSchedules_ASC
+  SupportsRideSchedules_DESC
+  FastPass_ASC
+  FastPass_DESC
+  FastPassReturnTimes_ASC
+  FastPassReturnTimes_DESC
+  Now_ASC
+  Now_DESC
+}
+
+type ParkPreviousValues {
+  id: ID!
+  parkId: String!
+  Name: String!
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+type ParkSubscriptionPayload {
+  mutation: MutationType!
+  node: Park
+  updatedFields: [String!]
+  previousValues: ParkPreviousValues
+}
+
+input ParkSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ParkWhereInput
+  AND: [ParkSubscriptionWhereInput!]
+  OR: [ParkSubscriptionWhereInput!]
+  NOT: [ParkSubscriptionWhereInput!]
+}
+
+input ParkUpdateInput {
+  parkId: String
+  rides: RideUpdateManyWithoutParkInput
+  Name: String
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+input ParkUpdateManyMutationInput {
+  parkId: String
+  Name: String
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+input ParkUpdateOneWithoutRidesInput {
+  create: ParkCreateWithoutRidesInput
+  update: ParkUpdateWithoutRidesDataInput
+  upsert: ParkUpsertWithoutRidesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ParkWhereUniqueInput
+}
+
+input ParkUpdateWithoutRidesDataInput {
+  parkId: String
+  Name: String
+  LocationString: String
+  SupportsWaitTimes: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsRideSchedules: Boolean
+  FastPass: Boolean
+  FastPassReturnTimes: Boolean
+  Now: String
+}
+
+input ParkUpsertWithoutRidesInput {
+  update: ParkUpdateWithoutRidesDataInput!
+  create: ParkCreateWithoutRidesInput!
+}
+
+input ParkWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  parkId: String
+  parkId_not: String
+  parkId_in: [String!]
+  parkId_not_in: [String!]
+  parkId_lt: String
+  parkId_lte: String
+  parkId_gt: String
+  parkId_gte: String
+  parkId_contains: String
+  parkId_not_contains: String
+  parkId_starts_with: String
+  parkId_not_starts_with: String
+  parkId_ends_with: String
+  parkId_not_ends_with: String
+  rides_every: RideWhereInput
+  rides_some: RideWhereInput
+  rides_none: RideWhereInput
+  Name: String
+  Name_not: String
+  Name_in: [String!]
+  Name_not_in: [String!]
+  Name_lt: String
+  Name_lte: String
+  Name_gt: String
+  Name_gte: String
+  Name_contains: String
+  Name_not_contains: String
+  Name_starts_with: String
+  Name_not_starts_with: String
+  Name_ends_with: String
+  Name_not_ends_with: String
+  LocationString: String
+  LocationString_not: String
+  LocationString_in: [String!]
+  LocationString_not_in: [String!]
+  LocationString_lt: String
+  LocationString_lte: String
+  LocationString_gt: String
+  LocationString_gte: String
+  LocationString_contains: String
+  LocationString_not_contains: String
+  LocationString_starts_with: String
+  LocationString_not_starts_with: String
+  LocationString_ends_with: String
+  LocationString_not_ends_with: String
+  SupportsWaitTimes: Boolean
+  SupportsWaitTimes_not: Boolean
+  SupportsOpeningTimes: Boolean
+  SupportsOpeningTimes_not: Boolean
+  SupportsRideSchedules: Boolean
+  SupportsRideSchedules_not: Boolean
+  FastPass: Boolean
+  FastPass_not: Boolean
+  FastPassReturnTimes: Boolean
+  FastPassReturnTimes_not: Boolean
+  Now: String
+  Now_not: String
+  Now_in: [String!]
+  Now_not_in: [String!]
+  Now_lt: String
+  Now_lte: String
+  Now_gt: String
+  Now_gte: String
+  Now_contains: String
+  Now_not_contains: String
+  Now_starts_with: String
+  Now_not_starts_with: String
+  Now_ends_with: String
+  Now_not_ends_with: String
+  AND: [ParkWhereInput!]
+  OR: [ParkWhereInput!]
+  NOT: [ParkWhereInput!]
+}
+
+input ParkWhereUniqueInput {
+  id: ID
+  parkId: String
 }
 
 type PastWaitTime {
@@ -162,6 +428,9 @@ input PastWaitTimeWhereUniqueInput {
 }
 
 type Query {
+  park(where: ParkWhereUniqueInput!): Park
+  parks(where: ParkWhereInput, orderBy: ParkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Park]!
+  parksConnection(where: ParkWhereInput, orderBy: ParkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParkConnection!
   pastWaitTime(where: PastWaitTimeWhereUniqueInput!): PastWaitTime
   pastWaitTimes(where: PastWaitTimeWhereInput, orderBy: PastWaitTimeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PastWaitTime]!
   pastWaitTimesConnection(where: PastWaitTimeWhereInput, orderBy: PastWaitTimeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PastWaitTimeConnection!
@@ -180,6 +449,7 @@ type Ride {
   fastPass: Boolean!
   status: String!
   lastUpdate: String
+  park: Park
 }
 
 type RideConnection {
@@ -189,6 +459,23 @@ type RideConnection {
 }
 
 input RideCreateInput {
+  id: ID
+  rideId: String!
+  name: String!
+  waitTime: Int!
+  active: Boolean!
+  fastPass: Boolean!
+  status: String!
+  lastUpdate: String
+  park: ParkCreateOneWithoutRidesInput
+}
+
+input RideCreateManyWithoutParkInput {
+  create: [RideCreateWithoutParkInput!]
+  connect: [RideWhereUniqueInput!]
+}
+
+input RideCreateWithoutParkInput {
   id: ID
   rideId: String!
   name: String!
@@ -234,6 +521,94 @@ type RidePreviousValues {
   lastUpdate: String
 }
 
+input RideScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  rideId: String
+  rideId_not: String
+  rideId_in: [String!]
+  rideId_not_in: [String!]
+  rideId_lt: String
+  rideId_lte: String
+  rideId_gt: String
+  rideId_gte: String
+  rideId_contains: String
+  rideId_not_contains: String
+  rideId_starts_with: String
+  rideId_not_starts_with: String
+  rideId_ends_with: String
+  rideId_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  waitTime: Int
+  waitTime_not: Int
+  waitTime_in: [Int!]
+  waitTime_not_in: [Int!]
+  waitTime_lt: Int
+  waitTime_lte: Int
+  waitTime_gt: Int
+  waitTime_gte: Int
+  active: Boolean
+  active_not: Boolean
+  fastPass: Boolean
+  fastPass_not: Boolean
+  status: String
+  status_not: String
+  status_in: [String!]
+  status_not_in: [String!]
+  status_lt: String
+  status_lte: String
+  status_gt: String
+  status_gte: String
+  status_contains: String
+  status_not_contains: String
+  status_starts_with: String
+  status_not_starts_with: String
+  status_ends_with: String
+  status_not_ends_with: String
+  lastUpdate: String
+  lastUpdate_not: String
+  lastUpdate_in: [String!]
+  lastUpdate_not_in: [String!]
+  lastUpdate_lt: String
+  lastUpdate_lte: String
+  lastUpdate_gt: String
+  lastUpdate_gte: String
+  lastUpdate_contains: String
+  lastUpdate_not_contains: String
+  lastUpdate_starts_with: String
+  lastUpdate_not_starts_with: String
+  lastUpdate_ends_with: String
+  lastUpdate_not_ends_with: String
+  AND: [RideScalarWhereInput!]
+  OR: [RideScalarWhereInput!]
+  NOT: [RideScalarWhereInput!]
+}
+
 type RideSubscriptionPayload {
   mutation: MutationType!
   node: Ride
@@ -260,6 +635,17 @@ input RideUpdateInput {
   fastPass: Boolean
   status: String
   lastUpdate: String
+  park: ParkUpdateOneWithoutRidesInput
+}
+
+input RideUpdateManyDataInput {
+  rideId: String
+  name: String
+  waitTime: Int
+  active: Boolean
+  fastPass: Boolean
+  status: String
+  lastUpdate: String
 }
 
 input RideUpdateManyMutationInput {
@@ -270,6 +656,44 @@ input RideUpdateManyMutationInput {
   fastPass: Boolean
   status: String
   lastUpdate: String
+}
+
+input RideUpdateManyWithoutParkInput {
+  create: [RideCreateWithoutParkInput!]
+  delete: [RideWhereUniqueInput!]
+  connect: [RideWhereUniqueInput!]
+  set: [RideWhereUniqueInput!]
+  disconnect: [RideWhereUniqueInput!]
+  update: [RideUpdateWithWhereUniqueWithoutParkInput!]
+  upsert: [RideUpsertWithWhereUniqueWithoutParkInput!]
+  deleteMany: [RideScalarWhereInput!]
+  updateMany: [RideUpdateManyWithWhereNestedInput!]
+}
+
+input RideUpdateManyWithWhereNestedInput {
+  where: RideScalarWhereInput!
+  data: RideUpdateManyDataInput!
+}
+
+input RideUpdateWithoutParkDataInput {
+  rideId: String
+  name: String
+  waitTime: Int
+  active: Boolean
+  fastPass: Boolean
+  status: String
+  lastUpdate: String
+}
+
+input RideUpdateWithWhereUniqueWithoutParkInput {
+  where: RideWhereUniqueInput!
+  data: RideUpdateWithoutParkDataInput!
+}
+
+input RideUpsertWithWhereUniqueWithoutParkInput {
+  where: RideWhereUniqueInput!
+  update: RideUpdateWithoutParkDataInput!
+  create: RideCreateWithoutParkInput!
 }
 
 input RideWhereInput {
@@ -355,6 +779,7 @@ input RideWhereInput {
   lastUpdate_not_starts_with: String
   lastUpdate_ends_with: String
   lastUpdate_not_ends_with: String
+  park: ParkWhereInput
   AND: [RideWhereInput!]
   OR: [RideWhereInput!]
   NOT: [RideWhereInput!]
@@ -366,6 +791,7 @@ input RideWhereUniqueInput {
 }
 
 type Subscription {
+  park(where: ParkSubscriptionWhereInput): ParkSubscriptionPayload
   pastWaitTime(where: PastWaitTimeSubscriptionWhereInput): PastWaitTimeSubscriptionPayload
   ride(where: RideSubscriptionWhereInput): RideSubscriptionPayload
 }
