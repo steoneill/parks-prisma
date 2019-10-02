@@ -40,3 +40,7 @@ type User {
   username: String!
 
 }
+
+type prefs {
+  animation: Boolean!
+}
