@@ -38,9 +38,11 @@ type User {
   password: String!
   email: String!
   username: String!
+  preferences: prefs!
 
 }
 
 type prefs {
   animation: Boolean!
 }
+
